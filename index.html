@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Pristavka Dmitriy</title>
+</head>
+
+<body>
+    <div>
+        <h1>Homework 6</h1>
+        <h2>Required</h2>
+        <p> Создайте массив tags с именами валидных тегов HTML5. Теперь создайте массив classes с именами классов (
+            число элементов в массиве classes должно быть не меньше, чем число элементов массива tags ). Создайте
+            элемент style и вставьте его в head документа. Добавьте контент элемента style с описанием классов, имена
+            которых находятся в массиве classes.Итерируйте массив tags, создавая соответствующие элементы и вставляя их
+            на страницу, добавляя каждому элементу класс из массива classes
+        </p>
+        <div class="code">
+            <pre>
+var tags = ['div', 'p', 'a']
+var classes = ['box', 'text', 'link']
+var style = document.head.appendChild(document.createElement('style'))
+style.appendChild(document.createTextNode(
+`
+.box { 
+  border: 2px solid black;
+  width: 500px;
+  height: 500px;
+}
+.text { 
+  color: gray;
+  font-weight: 600;
+  font-size: 25px;
+}
+.link { 
+  color: blue;
+  font-style: italic;
+  font-size: 25px;
+} 
+`))
+for ( var i = 0; i < tags.length; i++ ) {
+     var elem = document.body.appendChild(document.createElement(tags[i])) 
+     elem.className = classes[i]
+     elem.innerText = `${classes[i]} ${tags[i]}`
+          
+}
+            </pre>
+        </div>
+    </div>
+    <div>
+        <h2>Additionaly 2</h2>
+        <p> Результат должен быть аналогичен тому, что получится в предыдущем упражнении. Однако исходный массив tags
+            должен быть массивом объектов, каждый из которых содержит не только имя тега элемента, но и его атрибуты, а
+            так же хотя бы один обработчик события. Таким образом, массив classes нам уже не нужен, но кроме стилизации
+            элементов нужно еще добавить их контент, используя как атрибуты тегов, так и свойства элементов DOM</p>
+        <div class="code">
+            <pre>
+var elmConfigs = [{
+    name: 'div',
+    content: "Lorem ipsum",
+    cls: 'box'
+},{
+    name: 'p',
+    content: "Lorem ipsum",
+    cls: 'text'
+},{
+    name: 'a',
+    content: "Lorem ipsum",
+    cls: 'link'
+}]
+ 
+var style = document.head.appendChild(document.createElement('style'))
+style.appendChild(document.createTextNode(
+`
+.box { 
+  border: 2px solid black;
+  width: 500px;
+  height: 500px;
+}
+.text { 
+  color: gray;
+  font-weight: 600;
+  font-size: 25px;
+}
+.link { 
+  color: blue;
+  font-style: italic;
+  font-size: 25px;
+} 
+`))
+for ( var conf of elmConfigs ) {
+     var elem = document.body.appendChild(document.createElement(conf.name)) 
+     elem.className = conf.cls
+     elem.innerText = conf.content
+     elem.onmouseenter = function(event){
+         var rgb = `rgb(${getRandomNum()},${getRandomNum()},${getRandomNum()})`
+         event.currentTarget.style.backgroundColor = rgb
+         console.log(rgb)
+     }
+     elem.onmouseleave = function (event){
+         event.currentTarget.style.backgroundColor = null
+     }
+}
+
+function getRandomNum() {
+     var min = 150;
+     return Math.round(Math.random()*(220-min)+min)
+   
+}  
+            </pre>
+        </div>
+    </div>
+    <div>
+        <h2>Additionaly 3</h2>
+        <p> Напилить код, который выбирает все элементы-потомки body ( :warning: кроме элементов script ) и добавляет им класc:
+
+            .redBack {
+                background-color: red!important;
+            }
+            Альтернативный вариант - выбрать все заранее заданные элементы:
+            
+            var tags = [ "header", "footer", "main", "div", "p" ]
+            Запустить код в консоли любой страницы.
+            
+            Подсказка: используйте методы объекта classList</p>
+        <div class="code">
+            <pre>
+var tags = ["header", "footer", "main", "div", "p"]
+var elmConfigs = [{
+    name: 'header',
+    content: "Header",
+    cls: 'bar'
+}, {
+    name: 'div',
+    content: "Lorem ipsum",
+    cls: 'box'
+}, {
+    name: 'p',
+    content: "Lorem ipsum",
+    cls: 'text'
+}, {
+    name: 'main',
+    content: "Main",
+    cls: 'box'
+}, {
+    name: 'footer',
+    content: "Footer",
+    cls: 'bar'
+}]
+var style = document.head.appendChild(document.createElement('style'))
+style.appendChild(document.createTextNode(`
+
+.bar { 
+  border: 2px solid black;
+  width: 500px;
+  height: 50px;
+}
+.box { 
+  border: 2px solid black;
+  width: 500px;
+  height: 500px;
+}
+.text { 
+  color: gray;
+  font-weight: 600;
+  font-size: 25px;
+}
+.link { 
+  color: blue;
+  font-style: italic;
+  font-size: 25px;
+}
+.redBack {
+    background-color: red!important;
+} 
+`))
+for (var conf of elmConfigs) {
+    var elem = document.body.appendChild(document.createElement(conf.name))
+    elem.className = conf.cls
+    elem.innerText = conf.content
+}
+
+var query = tags.join(',')
+
+var nodeList = document.body.querySelectorAll(query)
+
+nodeList.forEach(elem=>elem.classList.add('redBack'))
+            </pre>
+        </div>
+    </div>
+</body>
+
+</html>
